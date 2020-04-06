@@ -1,0 +1,22 @@
+{
+  "name": "boardbot",
+  "version": "1.0.0",
+  "description": "A Discord bot to facilitate the distrobution of hidden information to allow for tabletop games over voice",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon --inspect app.js",
+    "test": "node app.js --test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jacobjdowning/boardbot"
+  },
+  "author": "Jacob J Downing",
+  "license": "MIT",
+  "dependencies": {
+    "discord.js": "^12.1.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.2"
+  }
+}
