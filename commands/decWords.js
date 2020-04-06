@@ -1,3 +1,4 @@
+//TODO: consolidate into one decrypto command with arguments
 module.exports = {
     "name": "decwords",
     "onlyGame": "decrypto",

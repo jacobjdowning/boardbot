@@ -1,3 +1,4 @@
+//TODO: consolidate into one decrypto command with arguments
 const codeReveal = require('./common/codeReveals.js');
 module.exports = {
     "name": "blackcode",
