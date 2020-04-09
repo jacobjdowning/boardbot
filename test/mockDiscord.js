@@ -5,6 +5,62 @@ function mockLog(content){
     console.log(`[Mock]${content}`);
 }
 
+class StreamDispatcher{
+    constructor(stream, options){
+        let empty = ()=>{console.log("Nothing here")};
+        this.hooks = {
+            'debug': empty,
+            'start': empty,
+            'finish': empty,
+            'error': empty
+        }
+        this.stream = stream
+    }
+
+    on(name, callback){
+        this.hooks[name] = callback;
+    }
+
+    play(){
+        this.hooks['start']();
+        mockLog(`Playing audio from${this.stream.path}`);
+        setTimeout(()=>{this.hooks['finish']()}, 10);
+    }
+}
+
+class VoiceConnection{
+    constructor(channel){
+        this.connected = true;
+        this.channel = channel
+    }
+
+    play(stream, options){
+        let dispatch = new StreamDispatcher(stream, options)
+        setTimeout(()=>{dispatch.play()}, 0);
+        return dispatch;
+    }
+
+    disconnect(){
+        if (!this.connected){
+            console.error("Tried to disconnect while not connected");
+            return;
+        }
+        this.connected = false;
+        mockLog(`Disconnecting from ${this.channel.id}`);
+    }
+}
+
+class Member{
+    static nextID = 0;
+    constructor(user, voiceChannelID){
+        this.user = user;
+        this.voice = {};
+        this.voice.channel = new Channel(
+            voiceChannelID?voiceChannelID:`v${Member.nextID++}`,
+            "voice");
+    }
+}
+
 class Channel{
     constructor(id, type){
         this.type = type? type:'text';
@@ -15,12 +71,21 @@ class Channel{
         mockLog(`[Text.${this.id}]${content}`);
     }
 
+    async join(){
+        if(this.type != 'voice'){
+            console.error("Cannont join non-voice channel");
+            return;
+        } 
+        mockLog(`Connecting to voice channel ${this.id}`)
+        return new VoiceConnection(this);
+    }
+
 }
 
 class User{
     constructor(id, username){
         this.username = username?username:`u${id}:USERNAME`;
-
+        
         this.id = `u${id}`;
         this.bot = false;
     }
@@ -33,11 +98,12 @@ class User{
 
 class Message{
     static nextID = 0;
-    constructor(client, channel, author, content){
+    constructor(client, channel, author, member, content){
         this.channel= channel;
         this.client= client;
         this.author= author;
         this.content = content 
+        this.member = member;
         this.id = `m${Message.nextID++}`;
     }
 
@@ -60,6 +126,7 @@ class Client{
         this.channels = {};
         this.users.cache = new realDiscord.Collection();
         this.channels.cache = new realDiscord.Collection();
+        this.members = new realDiscord.Collection();
     }
 
     setTest(test){
@@ -78,11 +145,14 @@ class Client{
             if(!this.users.cache.has(`u${outline.author.id}`)){
                 let user = new User(outline.author.id, outline.author.username);
                 this.users.cache.set(user.id, user);
+                let member = new Member(user, outline.author.vid);
+                this.members.set(user.id, member);
             }
             this.hooks['message'](
                 new Message(this,
                     this.channels.cache.get(`c${outline.channel.id}`),
                     this.users.cache.get(`u${outline.author.id}`),
+                    this.members.get(`u${outline.author.id}`),
                     outline.content)
             );
         });
