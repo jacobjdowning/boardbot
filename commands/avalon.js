@@ -7,6 +7,9 @@ module.exports = {
         table.game = new Resistance(table);
         const cache = msg.client.users.cache;
         const players = table.game.players;
+        
+
+        // Inform Players of their roles
         const evils = players.filter((player) =>{
             return player.alignment == "evil";
         });
@@ -38,8 +41,17 @@ module.exports = {
                 cache.get(player.id).send(
                     "You are good and loyal servant of King Arthur. "+
                     "Weed out the evil in your midst."
-                 );
+                );
             }
         });
+
+        //Start first round
+        let leader = table.game.nextLeader;//Move to common?
+        cache.get(leader.id).send(
+            "You have been chosen to lead the next mission. "+
+            "Propose your team with command \"!team\" followed by "+
+            "the usernames of the team members you want to go on the mission. "+
+            `The next mission requires ${table.game.currMissionCount} team members` 
+        )
     }
 }
