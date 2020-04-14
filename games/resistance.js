@@ -90,7 +90,7 @@ class Resistance {
     }
 
     get currLeader(){
-        return this._players[0];
+        return this._players[this._players.length - 1];
     }
 
     get players(){

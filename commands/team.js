@@ -16,6 +16,10 @@ module.exports = {
             msg.reply("Only team leaders can propse a team");
             return;
         }
+        if (table.game.voteState != "none"){
+            msg.reply("There is another vote going on right now");
+            return;
+        }
         
         //somewhere check that there isn't already a team being voted on
 

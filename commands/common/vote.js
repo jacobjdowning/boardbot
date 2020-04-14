@@ -1,5 +1,18 @@
 const fs = require('fs');
 
+function startRound(msg, game){
+    const cache = msg.client.users.cache;
+    let leader = game.nextLeader; // Move to common?
+    cache.get(leader.id).send(
+        "You have been chosen to lead the next mission. "+
+        "Propose your team with command \"!team\" followed by "+
+        "the usernames of the team members you want to go on the "+
+        "mission. The next mission requires "+
+        `${game.currMissionCount} team members` 
+    )
+    game.voteState = "none";
+}
+
 function shuffle(array){ //Definitely move this to a utility module
     for(var i = array.length-1; i>=0; i--){
         let j = parseInt(Math.random() * i);
@@ -10,9 +23,10 @@ function shuffle(array){ //Definitely move this to a utility module
     return array
 }
 
-function playSoundRec(connection, left){
+function playSoundRec(connection, left, end){
     if(!left.length){
         connection.disconnect();
+        end();
         return;
     }
 
@@ -21,28 +35,29 @@ function playSoundRec(connection, left){
     const dispatcher = connection.play(stream ,{ type: 'ogg/opus', volume: 1 });
 
     dispatcher.on('finish', () => {
-        playSoundRec(connection, left);
+        playSoundRec(connection, left, end);
     });
 
     dispatcher.on('error', (error) => console.error("Error: ", error));
 }
 
-async function playSounds(message, soundNames){
+async function playSounds(message, soundNames, end){
+    const timeTaken = 5000 + Math.random()*10000
+    console.log(timeTaken);
     setTimeout(async ()=>{
         if (message.member.voice.channel) {
             const connection = await message.member.voice.channel.join();
-            playSoundRec(connection, soundNames);
+            playSoundRec(connection, soundNames, end);
         }
-    }, 5000 + Math.random()*10000);
+    }, timeTaken);
 }
 
-function announceResults(msg, game){
-    game.voteState="none";
+function announceResults(msg, game, end){
     let sounds = Array.from(game.votes, ([id, vote]) =>{
         return vote?"success.ogg":"failure.ogg";
     })
     sounds = shuffle(sounds);
-    playSounds(msg, sounds).catch(err =>{console.error(err)});
+    playSounds(msg, sounds, end).catch(err =>{console.error(err)});
 }
 
 
@@ -53,6 +68,7 @@ module.exports = (pass, game, playerid, msg) => {
         return;
     }
     if(lastVote){
+
         if (game.voteState == "team"){
             const responseChannel = msg.client.channels
                                     .cache.get(game.responseChannel);
@@ -70,10 +86,10 @@ module.exports = (pass, game, playerid, msg) => {
                 
             responseChannel.send(breakdownString)
 
-            game.votes.clear();
-            
             const cache = msg.client.users.cache;
 
+            game.votes.clear();
+        
             if (voteCount > 0) {
                 game.voteState = "quest";
                 game.proposedTeam.forEach(teammember =>{
@@ -91,24 +107,23 @@ module.exports = (pass, game, playerid, msg) => {
                         if(voteResult == "Ineligable"){
                             console.error("Automatic Vote denied");
                         }else if(voteResult){
-                            console.log("Here");
-                            announceResults(msg, game);
+                            announceResults(msg, game, () =>{
+                                // startRound(msg, game);
+                            });
+                            game.curQuest++;
+                            startRound(msg, game);
                         }
                     }
                 });
             }else{
-                let leader = game.nextLeader; // Move to common?
-                cache.get(leader.id).send(
-                    "You have been chosen to lead the next mission. "+
-                    "Propose your team with command \"!team\" followed by "+
-                    "the usernames of the team members you want to go on the "+
-                    "mission. The next mission requires "+
-                    `${game.currMissionCount} team members` 
-                )
-                game.voteState = "none";
+                startRound(msg,game);
             }
         }else if(game.voteState == "quest"){
-            announceResults(msg,game);
+            announceResults(msg,game, ()=>{
+                // startRound(msg, game);
+            });
+            game.curQuest++;
+            startRound(msg, game);
         }
     }
 }

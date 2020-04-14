@@ -340,4 +340,169 @@ module.exports = [
             "id": 5
         }
     },
+    //Propose Team
+    {
+        "content":"!team u0:USERNAME u1:USERNAME u3:USERNAME",
+        "channel":{
+            "id" : 0
+        },
+        "author":{
+            "id": 0
+        }
+    },
+    {
+        "content":"!team u0:USERNAME u1:USERNAME u3:USERNAME",
+        "channel":{
+            "id" : 0
+        },
+        "author":{
+            "id": 1
+        }
+    },
+    {
+        "content":"!team u0:USERNAME u1:USERNAME u3:USERNAME",
+        "channel":{
+            "id" : 0
+        },
+        "author":{
+            "id": 2
+        }
+    },
+    {
+        "content":"!team u0:USERNAME u1:USERNAME u3:USERNAME",
+        "channel":{
+            "id" : 0
+        },
+        "author":{
+            "id": 3
+        }
+    },
+    {
+        "content":"!team u0:USERNAME u1:USERNAME u3:USERNAME",
+        "channel":{
+            "id" : 0
+        },
+        "author":{
+            "id": 4
+        }
+    },
+    {
+        "content":"!team u0:USERNAME u1:USERNAME u3:USERNAME",
+        "channel":{
+            "id" : 0
+        },
+        "author":{
+            "id": 5
+        }
+    },
+    //Pass the team
+    {
+        "content":"!pass",
+        "channel":{
+            "id" : "dm"
+        },
+        "author":{
+            "id": 0
+        }
+    },
+    {
+        "content":"!pass",
+        "channel":{
+            "id" : "dm"
+        },
+        "author":{
+            "id": 1
+        }
+    },
+    {
+        "content":"!pass",
+        "channel":{
+            "id" : "dm"
+        },
+        "author":{
+            "id": 2
+        }
+    },
+    {
+        "content":"!pass",
+        "channel":{
+            "id" : "dm"
+        },
+        "author":{
+            "id": 3
+        }
+    },
+    {
+        "content":"!pass",
+        "channel":{
+            "id" : "dm"
+        },
+        "author":{
+            "id": 4
+        }
+    },
+    {
+        "content":"!pass",
+        "channel":{
+            "id" : "dm"
+        },
+        "author":{
+            "id": 5
+        }
+    },
+    //any evils pass the mission
+    {
+        "content":"!pass",
+        "channel":{
+            "id" : "dm"
+        },
+        "author":{
+            "id": 0
+        }
+    },
+    {
+        "content":"!pass",
+        "channel":{
+            "id" : "dm"
+        },
+        "author":{
+            "id": 1
+        }
+    },
+    {
+        "content":"!pass",
+        "channel":{
+            "id" : "dm"
+        },
+        "author":{
+            "id": 2
+        }
+    },
+    {
+        "content":"!pass",
+        "channel":{
+            "id" : "dm"
+        },
+        "author":{
+            "id": 3
+        }
+    },
+    {
+        "content":"!pass",
+        "channel":{
+            "id" : "dm"
+        },
+        "author":{
+            "id": 4
+        }
+    },
+    {
+        "content":"!pass",
+        "channel":{
+            "id" : "dm"
+        },
+        "author":{
+            "id": 5
+        }
+    },
 ]
