@@ -62,9 +62,10 @@ class Member{
 }
 
 class Channel{
-    constructor(id, type){
+    constructor(id, type, guild){
         this.type = type? type:'text';
         this.id = `c${id}`;
+        this.guild = guild;
     }
 
     send(content){
@@ -114,6 +115,16 @@ class Message{
     }
 }
 
+class Guild{
+    constructor(client, id){
+        this.members = {};
+        this.members.cache = new realDiscord.Collection();
+        this.id = `g${id}`;
+        this.available = true;
+        this.client = client;
+    }
+}
+
 class Client{
     constructor(){
         this.hooks = {
@@ -124,9 +135,10 @@ class Client{
         this.self.bot = true;
         this.users = {};
         this.channels = {};
+        this.guilds = {};
         this.users.cache = new realDiscord.Collection();
         this.channels.cache = new realDiscord.Collection();
-        this.members = new realDiscord.Collection();
+        this.guilds.cache = new realDiscord.Collection();
     }
 
     setTest(test){
@@ -134,25 +146,51 @@ class Client{
     }
 
     login(token){
+        if(token == null){
+            console.log("No Token given");
+            return;
+        }
         this.hooks['ready']();
         //run tests here
         const messages = require(`./${this.test}.js`);
         messages.forEach(outline => {
-            if(!this.channels.cache.has(`c${outline.channel.id}`)){
-                const channel = new Channel(outline.channel.id, outline.channel.type)
-                this.channels.cache.set(channel.id, channel); 
-            }
+            let member;
+            let guild = "NEVER CHANGED";
             if(!this.users.cache.has(`u${outline.author.id}`)){
                 let user = new User(outline.author.id, outline.author.username);
                 this.users.cache.set(user.id, user);
-                let member = new Member(user, outline.author.vid);
-                this.members.set(user.id, member);
+            }
+            if(outline.channel.id == "dm"){
+                member = null;
+                guild = null;
+            }else{
+                if (!outline.guild){
+                    outline.guild = {}
+                    outline.guild.id = 0
+                }
+                if(!this.guilds.cache.has(`g${outline.guild.id}`)){
+                    let guild = new Guild(this, outline.guild.id);
+                    this.guilds.cache.set(guild.id, guild);
+                }
+                guild = this.guilds.cache.get(`g${outline.guild.id}`);
+                if(!guild.members.cache.has(`u${outline.author.id}`)){
+                    member = new Member(
+                        this.users.cache.get(`u${outline.author.id}`),
+                        outline.author.vid);
+                    guild.members.cache.set(member.user.id, member);
+                }
+            }
+            if(!this.channels.cache.has(`c${outline.channel.id}`)){
+                const channel = new Channel(outline.channel.id,
+                                            outline.channel.type,
+                                            guild);
+                this.channels.cache.set(channel.id, channel); 
             }
             this.hooks['message'](
                 new Message(this,
                     this.channels.cache.get(`c${outline.channel.id}`),
                     this.users.cache.get(`u${outline.author.id}`),
-                    this.members.get(`u${outline.author.id}`),
+                    member,
                     outline.content)
             );
         });
