@@ -42,7 +42,7 @@ function playSoundRec(connection, left, end){
 }
 
 function playSounds(message, table, soundNames, end){
-    const timeTaken = 5000 + Math.random()*10000
+    const timeTaken = 8000 + Math.random()*10000
     let member = table.guild.members.cache.get(message.author.id)
     if(member == null){
         console.error("Vote from user who is not a member of the guild"+
@@ -51,7 +51,6 @@ function playSounds(message, table, soundNames, end){
     }
     if (member.voice.channel) {
         setTimeout(()=>{
-            console.log(member.voice.channel.join().then());
             member.voice.channel.join().then(connection =>{
                 playSoundRec(connection, soundNames, end);
             }, (err)=>{console.log(err)});
@@ -77,6 +76,7 @@ module.exports = (pass, game, playerid, msg, table) => {
         msg.reply("You are ineligable to vote at this time");
         return;
     }
+    msg.reply("Vote registered"); //Maybe move
     if(lastVote){
 
         if (game.voteState == "team"){

@@ -20,6 +20,8 @@ module.exports = {
             msg.reply("There is another vote going on right now");
             return;
         }
+
+        msg.reply("Team vote sent");// Maybe move
         
         //somewhere check that there isn't already a team being voted on
 
