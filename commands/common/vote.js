@@ -66,6 +66,7 @@ function announceResults(message, table, game, end){
         return vote?"success.ogg":"failure.ogg";
     })
     sounds = shuffle(sounds);
+    sounds.unshift("ready.ogg");
     playSounds(message, table, sounds, end);
 }
 
