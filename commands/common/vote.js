@@ -41,28 +41,37 @@ function playSoundRec(connection, left, end){
     dispatcher.on('error', (error) => console.error("Error: ", error));
 }
 
-async function playSounds(message, soundNames, end){
+function playSounds(message, table, soundNames, end){
     const timeTaken = 5000 + Math.random()*10000
-    console.log(timeTaken);
-    if (message.member.voice.channel) {
+    let member = table.guild.members.cache.get(message.author.id)
+    if(member == null){
+        console.error("Vote from user who is not a member of the guild"+
+                        "where the table for this game is setup");
+        return
+    }
+    if (member.voice.channel) {
         setTimeout(()=>{
-            message.member.voice.channel.join().then(connection =>{
+            console.log(member.voice.channel.join().then());
+            member.voice.channel.join().then(connection =>{
                 playSoundRec(connection, soundNames, end);
-            }).cacth(err =>{console.error(err)});
+            }, (err)=>{console.log(err)});
         }, timeTaken);
+    }else{
+        console.log("Voice channel inaccessable");
     }
 }
-
-function announceResults(msg, game, end){
+// Why are these two seporate functions? ^ and v
+// instead of using "end function" somehow make this a promise
+function announceResults(message, table, game, end){
     let sounds = Array.from(game.votes, ([id, vote]) =>{
         return vote?"success.ogg":"failure.ogg";
     })
     sounds = shuffle(sounds);
-    playSounds(msg, sounds, end).catch(err =>{console.error(err)});
+    playSounds(message, table, sounds, end);
 }
 
 
-module.exports = (pass, game, playerid, msg) => {
+module.exports = (pass, game, playerid, msg, table) => {
     const lastVote = game.safeVote(pass, playerid);
     if (lastVote == "Ineligable"){
         msg.reply("You are ineligable to vote at this time");
@@ -108,7 +117,7 @@ module.exports = (pass, game, playerid, msg) => {
                         if(voteResult == "Ineligable"){
                             console.error("Automatic Vote denied");
                         }else if(voteResult){
-                            announceResults(msg, game, () =>{
+                            announceResults(msg, table, game, () =>{
                                 startRound(msg, game);
                             });
                             game.curQuest++;
@@ -120,7 +129,7 @@ module.exports = (pass, game, playerid, msg) => {
                 startRound(msg,game);
             }
         }else if(game.voteState == "quest"){
-            announceResults(msg,game, ()=>{
+            announceResults(msg,table,game, ()=>{
                 startRound(msg, game);
             });
             game.curQuest++;

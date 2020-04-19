@@ -4,7 +4,13 @@ module.exports = {
     "name": "avalon",
     "onlyGame": "resistance",
     "execute": (msg, args, table) => {
+        if(msg.channel.type == "dm"){
+            msg.reply("Games have to start in a Server Text Channels");
+            return;
+        }
         table.game = new Resistance(table);
+        // TODO: vvvv check if available first for outages also set at a diffferect time for multiple tables
+        table.guild = msg.channel.guild;
         const cache = msg.client.users.cache;
         const players = table.game.players;
         
