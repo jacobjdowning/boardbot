@@ -150,7 +150,6 @@ Cream
 Crisp
 Criticize
 Crow
-Cruise
 Crumb
 Crust
 Cuff
@@ -422,7 +421,6 @@ Pants
 Paper
 Paper
 Park
-Parody
 Party
 Password
 Pastry
