@@ -44,12 +44,13 @@ function playSoundRec(connection, left, end){
 async function playSounds(message, soundNames, end){
     const timeTaken = 5000 + Math.random()*10000
     console.log(timeTaken);
-    setTimeout(async ()=>{
-        if (message.member.voice.channel) {
-            const connection = await message.member.voice.channel.join();
-            playSoundRec(connection, soundNames, end);
-        }
-    }, timeTaken);
+    if (message.member.voice.channel) {
+        setTimeout(()=>{
+            message.member.voice.channel.join().then(connection =>{
+                playSoundRec(connection, soundNames, end);
+            }).cacth(err =>{console.error(err)});
+        }, timeTaken);
+    }
 }
 
 function announceResults(msg, game, end){
@@ -108,10 +109,10 @@ module.exports = (pass, game, playerid, msg) => {
                             console.error("Automatic Vote denied");
                         }else if(voteResult){
                             announceResults(msg, game, () =>{
-                                // startRound(msg, game);
+                                startRound(msg, game);
                             });
                             game.curQuest++;
-                            startRound(msg, game);
+                            // startRound(msg, game);
                         }
                     }
                 });
@@ -120,10 +121,10 @@ module.exports = (pass, game, playerid, msg) => {
             }
         }else if(game.voteState == "quest"){
             announceResults(msg,game, ()=>{
-                // startRound(msg, game);
+                startRound(msg, game);
             });
             game.curQuest++;
-            startRound(msg, game);
+            // startRound(msg, game);
         }
     }
 }
