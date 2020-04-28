@@ -15,7 +15,6 @@ const wordlist = fs.readFileSync('./assets/wordlist.txt',{'encoding':'utf8'})
 class Decrypto {
     constructor(table){
         this.roundCount = 0;
-        this.reveals = [true, true];
         this.teams = [];
         this.teams.push(table.teams.get('black'));
         this.teams.push(table.teams.get('white'));
@@ -61,7 +60,6 @@ class Decrypto {
     }
 
     startRound(){
-        if (!(this.reveals[0] && this.reveals[1])) return "This round isn't over yet";
         if(this.roundCount++ >= 6) return "Game's over! Time to score";
         let messages = [{"id": "channel", "content":`Starting round:${this.roundCount}`}];
         let encryptors = [];
@@ -80,8 +78,6 @@ class Decrypto {
                 ` this round, your code is ${this.codes[i]}`
             });
         }
-        this.reveals[0] = false;
-        this.reveals[1] = false;
         return messages;
     }
 
@@ -98,7 +94,6 @@ class Decrypto {
     }
 
     revealCode(team){ //0 is black team, 1 is white team
-        this.reveals[team] = true;
         return `The ${team?'white':'black'} team's code was ${this.codes[team]}`;        
     }
 }

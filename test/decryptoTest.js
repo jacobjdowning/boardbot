@@ -55,24 +55,6 @@ module.exports = [
         }
     },
     {
-        "content":"!blackCode",
-        "channel":{
-            "id" : 0
-        },
-        "author":{
-            "id": 3
-        }
-    },
-    {
-        "content":"!whiteCode",
-        "channel":{
-            "id" : 0
-        },
-        "author":{
-            "id": 3
-        }
-    },
-    {
         "content":"!decRound",
         "channel":{
             "id" : 0
