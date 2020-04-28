@@ -54,4 +54,22 @@ module.exports = [
             "id": 2
         }
     },
+    {
+        "content":"!list",
+        "channel":{
+            "id" : 1
+        },
+        "author":{
+            "id":2
+        }
+    },
+    {
+        "content":"!clear",
+        "channel":{
+            "id" : 1
+        },
+        "author":{
+            "id":2
+        }
+    },
 ]

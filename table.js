@@ -30,7 +30,7 @@ class Table {
 
     clearPlayers(){
         this.teams.forEach(team => {
-           this.team.forEach(player =>{
+           team.forEach(player =>{
                Table.playerConnections.delete(player.id);
            });
         });
