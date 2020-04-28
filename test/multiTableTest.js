@@ -1,7 +1,7 @@
 //A list of messages to be sent in order
 module.exports = [
     {
-        "content":"!join black",
+        "content":"!join",
         "channel":{
             "id" : 0
         },
@@ -10,7 +10,7 @@ module.exports = [
         }
     },
     {
-        "content":"!join black",
+        "content":"!join",
         "channel":{
             "id" : 0
         },
@@ -19,60 +19,57 @@ module.exports = [
         }
     },
     {
-        "content":"!join white",
+        "content":"!join",
         "channel":{
-            "id" : 0
+            "id" : 1
         },
         "author":{
             "id": 2
         }
     },
     {
-        "content":"!join white",
+        "content":"!codenames",
         "channel":{
             "id" : 0
         },
         "author":{
+            "id": 0
+        }
+    },
+    {
+        "content":"!join",
+        "channel":{
+            "id" : 1
+        },
+        "author":{
             "id": 3
+        }
+    },   
+    {
+        "content":"!codenames",
+        "channel":{
+            "id" : 1
+        },
+        "author":{
+            "id": 2
         }
     },
     {
         "content":"!list",
         "channel":{
-            "id" : 0
+            "id" : 1
         },
         "author":{
-            "id": 3
+            "id":2
         }
     },
     {
-        "content":"!decrypto",
+        "content":"!clear",
         "channel":{
-            "id" : 0
+            "id" : 1
         },
         "author":{
-            "id": 3
+            "id":2
         }
     },
-    {
-        "content":"!decRound",
-        "channel":{
-            "id" : 0
-        },
-        "author":{
-            "id": 3
-        }
-    },
-    {
-        "content":"!decWords",
-        "channel":{
-            "id" : "u3",
-            "type": "dm"
-        },
-        "author":{
-            "id": 3
-        }
-    },
-    
-    
 ]
