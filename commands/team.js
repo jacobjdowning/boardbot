@@ -1,3 +1,4 @@
+const fs = require('fs');
 const sleep = require('util').promisify(setTimeout);
 
 function startRound(client, game){
@@ -52,7 +53,7 @@ function announceResults(votes, user, table, end){
     }
     if (member.voice.channel) {
         member.voice.channel.join().then(connection =>{
-            playSoundRec(connection, soundNames, end);
+            playSoundRec(connection, sounds, end);
         }, (err)=>console.log(err));
     }else{
         console.log("Voice channel inaccessable");
@@ -80,18 +81,22 @@ async function questVote(player, alignment){
 
 async function startQuestVote(allPlayers, table, client){
     const teamPlayers = allPlayers.filter(player => 
-        table.game.proposedTeam.some(player.username));
+        table.game.proposedTeam.some(element => {
+            return element.id == player.id
+        }));
     const votes = await Promise.all(
         teamPlayers.map(async player =>{
-            const alignment = table.game.players.get(player.id).alignment;
+            const alignment = table.game.players.filter(
+                (item) => item.id == player.id
+            )[0].alignment;
             return await questVote(player, alignment);
         })
     );
-    
-    announceResults(votes, allPlayers.first(), table, ()=>{
+    console.log("Test", votes);
+    announceResults(votes, allPlayers[0], table, ()=>{
         startRound(client, table.game);
     })//move into main async
-    
+    return;
 }
 
 async function teamVote(player, teamString){
@@ -102,10 +107,10 @@ async function teamVote(player, teamString){
     let collection = await channel.awaitMessages(m => {
         return m.content == '!pass' || m.content == '!fail'
     }, {max:1}); // probably should have a time limit
-    return [player, collection.first() == '!pass'];
+    return [player, collection.first().content == '!pass'];
 }
 
-async function startTeamVote(allPlayers, teamString, game, msg){
+async function startTeamVote(allPlayers, teamString, table, msg){
     const votes = await Promise.all(
         allPlayers.map( async player =>{
             return await teamVote(player, teamString);
@@ -119,18 +124,17 @@ async function startTeamVote(allPlayers, teamString, game, msg){
         }
         return voteCount;
     });
-
     msg.channel.send(votes.reduce((acc, cur, i, src) =>{
-        return acc + `${cur[0].username}: ${vote?':thumbsup:':':thumbsdown:'}\n` +
-        i==src.length-1?`The team vote ${success?'Passes':'Failed'}!`:'';
+        return acc + `${cur[0].username}: ${cur[1]?':thumbsup:':':thumbsdown:'}\n` +
+        (i==src.length-1?`The team vote ${success?'Passes':'Failed'}!`:'');
     }, ''));
 
     if (success) { //move this into main async
-        game.failedVotes = 0;
-        startQuestVote(allPlayers, table, client);
+        table.game.failedVotes = 0;
+        await startQuestVote(allPlayers, table, msg.client);
     }else{
         game.failedVotes++;
-        startRound(msg.client, game);
+        startRound(msg.client, table.game);
     }
 }
 
@@ -185,7 +189,7 @@ module.exports = {
         });
         table.game.setProposedTeam(team);
 
-        startTeamVote(allPlayers, teamString, table.game, msg)
+        startTeamVote(allPlayers, teamString, table, msg)
             .catch(err => console.error(err));
     }
 }

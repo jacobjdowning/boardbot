@@ -175,6 +175,25 @@ module.exports = [
             "id": 5
         }
     },
+    //pass
+    {
+        "content":"!pass",
+        "channel":{
+            "id" : "dm"
+        },
+        "author":{
+            "id": 0
+        }
+    },
+    {
+        "content":"!pass",
+        "channel":{
+            "id" : "dm"
+        },
+        "author":{
+            "id": 1
+        }
+    },
     // //Propose new team
     // {
     //     "content":"!team u3:USERNAME u5:USERNAME",
