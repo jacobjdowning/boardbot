@@ -1,8 +1,34 @@
 //TODO: Allow for some kind of assertion at the end of a test
 const realDiscord = require('discord.js');
+const sleep = require('util').promisify(setTimeout);
 
 function mockLog(content){
     console.log(`[Mock]${content}`);
+}
+
+class Collector{ //Only options supported are time and max
+    constructor(resolve, filter, options){
+        this.resolve = resolve;
+        this.filter = filter;
+        this.max = options.max;
+        if (options.time != null) {
+            setTimeout(this.end, options.time);    
+        }
+        this.collected = new realDiscord.Collection();
+    }
+
+    collect(message){
+        if(this.filter(message)){
+            this.collected.set(message.id, message)
+            if(this.max != null && this.max <= this.collected.size){
+                this.resolve(this.collected);
+            }
+        }
+    }
+
+    end(){
+        this.resolve(this.collected);
+    }
 }
 
 class StreamDispatcher{
@@ -66,10 +92,19 @@ class Channel{
         this.type = type? type:'text';
         this.id = `c${id}`;
         this.guild = guild;
+        this.collectors = [];
     }
 
-    send(content){
+    async send(content){
         mockLog(`[Text.${this.id}]${content}`);
+        return;
+    }
+
+    awaitMessages(filter, options){
+        const self = this;
+        return new Promise(resolve =>{
+            self.collectors.push(new Collector(resolve, filter, options));
+        });
     }
 
     async join(){
@@ -89,10 +124,11 @@ class User{
         
         this.id = `u${id}`;
         this.bot = false;
+        this.dmChannel = new Channel(`DM${this.id}`)
     }
 
     send(content){
-        mockLog(`[DM.${this.id}]${content}`);
+        this.dmChannel.send(content);
     }
 
 }
@@ -139,10 +175,69 @@ class Client{
         this.users.cache = new realDiscord.Collection();
         this.channels.cache = new realDiscord.Collection();
         this.guilds.cache = new realDiscord.Collection();
+        
     }
 
     setTest(test){
         this.test = test;
+    }
+
+    _message(outline){
+        let member;
+        let guild = "NEVER CHANGED";
+        if(!this.users.cache.has(`u${outline.author.id}`)){
+            let user = new User(outline.author.id, outline.author.username);
+            this.users.cache.set(user.id, user);
+        }
+        if(outline.channel.id == "dm"){
+            member = null;
+            guild = null;
+        }else{
+            if (!outline.guild){
+                outline.guild = {}
+                outline.guild.id = 0
+            }
+            if(!this.guilds.cache.has(`g${outline.guild.id}`)){
+                let guild = new Guild(this, outline.guild.id);
+                this.guilds.cache.set(guild.id, guild);
+            }
+            guild = this.guilds.cache.get(`g${outline.guild.id}`);
+            if(!guild.members.cache.has(`u${outline.author.id}`)){
+                member = new Member(
+                    this.users.cache.get(`u${outline.author.id}`),
+                    outline.author.vid);
+                guild.members.cache.set(member.user.id, member);
+            }
+        }
+        if(!this.channels.cache.has(`c${outline.channel.id}`)){
+            const channel = new Channel(outline.channel.id,
+                                        outline.channel.type,
+                                        guild);
+            this.channels.cache.set(channel.id, channel); 
+        }
+        const channel = outline.channel.id == "dm" ?
+            this.users.cache.get(`u${outline.author.id}`).dmChannel :
+            this.channels.cache.get(`c${outline.channel.id}`);
+        const msg = new Message(this,
+            channel,
+            this.users.cache.get(`u${outline.author.id}`),
+            member,
+            outline.content);
+
+        channel.collectors.forEach(collector =>{
+            collector.collect(msg);
+        });
+        this.hooks['message'](msg);
+    }
+
+    async _messages(messages){
+        for (let i = 0; i < messages.length; i++) {
+            const message = messages[i];
+            this._message(message);
+            await sleep(0);
+        }
+        console.log("FUCK THIS");
+        return;
     }
 
     login(token){
@@ -153,47 +248,7 @@ class Client{
         this.hooks['ready']();
         //run tests here
         const messages = require(`./${this.test}.js`);
-        messages.forEach(outline => {
-            let member;
-            let guild = "NEVER CHANGED";
-            if(!this.users.cache.has(`u${outline.author.id}`)){
-                let user = new User(outline.author.id, outline.author.username);
-                this.users.cache.set(user.id, user);
-            }
-            if(outline.channel.id == "dm"){
-                member = null;
-                guild = null;
-            }else{
-                if (!outline.guild){
-                    outline.guild = {}
-                    outline.guild.id = 0
-                }
-                if(!this.guilds.cache.has(`g${outline.guild.id}`)){
-                    let guild = new Guild(this, outline.guild.id);
-                    this.guilds.cache.set(guild.id, guild);
-                }
-                guild = this.guilds.cache.get(`g${outline.guild.id}`);
-                if(!guild.members.cache.has(`u${outline.author.id}`)){
-                    member = new Member(
-                        this.users.cache.get(`u${outline.author.id}`),
-                        outline.author.vid);
-                    guild.members.cache.set(member.user.id, member);
-                }
-            }
-            if(!this.channels.cache.has(`c${outline.channel.id}`)){
-                const channel = new Channel(outline.channel.id,
-                                            outline.channel.type,
-                                            guild);
-                this.channels.cache.set(channel.id, channel); 
-            }
-            this.hooks['message'](
-                new Message(this,
-                    this.channels.cache.get(`c${outline.channel.id}`),
-                    this.users.cache.get(`u${outline.author.id}`),
-                    member,
-                    outline.content)
-            );
-        });
+        this._messages(messages);
     }
 
     on(hookname, callback){
