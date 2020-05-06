@@ -236,7 +236,6 @@ class Client{
             this._message(message);
             await sleep(0);
         }
-        console.log("FUCK THIS");
         return;
     }
 
