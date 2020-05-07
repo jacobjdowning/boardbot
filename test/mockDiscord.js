@@ -12,7 +12,7 @@ class Collector{ //Only options supported are time and max
         this.filter = filter;
         this.max = options.max;
         if (options.time != null) {
-            setTimeout(this.end, options.time);    
+            setTimeout(()=>this.end(), options.time);    
         }
         this.collected = new realDiscord.Collection();
     }
@@ -224,6 +224,7 @@ class Client{
             member,
             outline.content);
 
+        console.log(msg.author.username, " : ", msg.content);
         channel.collectors.forEach(collector =>{
             collector.collect(msg);
         });
