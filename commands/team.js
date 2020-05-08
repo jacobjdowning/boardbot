@@ -92,7 +92,6 @@ async function startQuestVote(allPlayers, table, client){
             return await questVote(player, alignment);
         })
     );
-    console.log("Test", votes);
     announceResults(votes, allPlayers[0], table, ()=>{
         startRound(client, table.game);
     })//move into main async
@@ -159,11 +158,6 @@ module.exports = {
 
         //somewhere check that there isn't already a team being voted on
         msg.reply("Team vote sent");
-
-        // if (table.game.voteState != "none"){
-        //     msg.reply("There is another vote going on right now");
-        //     return;
-        // }
 
         const players = table.game.players;
         let team = [];
