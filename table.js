@@ -1,10 +1,16 @@
 class Table {
+    static playerConnections = new Map();
+    
     constructor(name){
         this.name = name;
         this.teams = new Map();
     }
 
     addPlayer(id, name, team){
+        if (Table.playerConnections.has(id)){
+            return false;
+        }
+        Table.playerConnections.set(id, this);
         if (team == null) {
             team = "unteamed";
         }
@@ -15,16 +21,31 @@ class Table {
             "id": id,
             "name": name
         });
+        return true;
+    }
+
+    get playerConnections(){
+        return Table.playerConnections;
     }
 
     clearPlayers(){
+        this.teams.forEach(team => {
+           team.forEach(player =>{
+               Table.playerConnections.delete(player.id);
+           });
+        });
         this.teams = new Map();
     }
 
     removePlayer(id){
+        if(!Table.playerConnections.has(id)){
+            return;
+        }
+        let table = Table.playerConnections.get(id);
+        Table.playerConnections.delete(id);
         let team = null;
         let index = null;
-        this.teams.forEach((v,k,m)=>{
+        table.teams.forEach((v,k,m)=>{
             for (let i = 0; i < v.length; i++) {
                 if (v[i].id == id) {
                     team = k
@@ -32,10 +53,10 @@ class Table {
                     break;
                 }
             }
-        })
+        });
 
         if (team) {
-            this.teams.get(team).splice(index, 1);
+            table.teams.get(team).splice(index, 1);
         }
     }
 
