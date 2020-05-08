@@ -15,6 +15,7 @@ class Resistance {
         this.curQuest = 0;
         this.votes = new Map();
         this.voteState="none";
+        this.failedVotes = 0;
     }
 
     setProposedTeam(team){
