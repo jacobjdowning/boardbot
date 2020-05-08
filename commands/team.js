@@ -73,8 +73,8 @@ async function questVote(player, alignment){
         "!fail if you'd like to sabatoge the mission, otherwise a success will "+
         "be issued");
         let collection = await channel.awaitMessages((m => 
-            m.content.includes('!fail')), {time:15000});
-        return collection.length>0;
+            m.content.toLowerCase().includes('!fail')), {time:15000});
+        return collection.size==0;
     }
     console.error("Invalid alignment");
 }

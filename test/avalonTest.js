@@ -177,7 +177,7 @@ module.exports = [
     },
     //pass
     {
-        "content":"!pass",
+        "content":"!fAil",
         "channel":{
             "id" : "dm"
         },
@@ -186,7 +186,7 @@ module.exports = [
         }
     },
     {
-        "content":"!pass",
+        "content":"!fAil",
         "channel":{
             "id" : "dm"
         },
@@ -195,15 +195,15 @@ module.exports = [
         }
     },
     // //Propose new team
-    // {
-    //     "content":"!team u3:USERNAME u5:USERNAME",
-    //     "channel":{
-    //         "id" : 0
-    //     },
-    //     "author":{
-    //         "id": 0
-    //     }
-    // },
+    {
+        "content":"!team u3:USERNAME u5:USERNAME",
+        "channel":{
+            "id" : 0
+        },
+        "author":{
+            "id": 0
+        }
+    },
     // {
     //     "content":"!team u3:USERNAME u5:USERNAME",
     //     "channel":{
