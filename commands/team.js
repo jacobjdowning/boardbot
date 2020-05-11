@@ -92,7 +92,6 @@ async function startQuestVote(allPlayers, table, client){
             return await questVote(player, alignment);
         })
     );
-    console.log("Test", votes);
     announceResults(votes, allPlayers[0], table, ()=>{
         startRound(client, table.game);
     })//move into main async
@@ -118,12 +117,12 @@ async function startTeamVote(allPlayers, teamString, table, msg){
     );
     
     const success = votes.reduce((acc, cur, i, src)=>{
-        let voteCount = acc + cur[0]?1:-1;
+        let voteCount = acc + (cur[1]?1:-1);
         if(i==src.length-1){
             return voteCount >= 0;
         }
         return voteCount;
-    });
+    }, 0);
     msg.channel.send(votes.reduce((acc, cur, i, src) =>{
         return acc + `${cur[0].username}: ${cur[1]?':thumbsup:':':thumbsdown:'}\n` +
         (i==src.length-1?`The team vote ${success?'Passes':'Failed'}!`:'');
@@ -133,7 +132,7 @@ async function startTeamVote(allPlayers, teamString, table, msg){
         table.game.failedVotes = 0;
         await startQuestVote(allPlayers, table, msg.client);
     }else{
-        game.failedVotes++;
+        table.game.failedVotes++;
         startRound(msg.client, table.game);
     }
 }
@@ -159,11 +158,6 @@ module.exports = {
 
         //somewhere check that there isn't already a team being voted on
         msg.reply("Team vote sent");
-
-        // if (table.game.voteState != "none"){
-        //     msg.reply("There is another vote going on right now");
-        //     return;
-        // }
 
         const players = table.game.players;
         let team = [];
