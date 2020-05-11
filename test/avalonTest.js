@@ -55,9 +55,18 @@ module.exports = [
             "id": 5
         }
     },
+    {
+        "content":"!join",
+        "channel":{
+            "id" : 0
+        },
+        "author":{
+            "id": 6
+        }
+    },
     //Start Game
     {
-        "content":"!avalon",
+        "content":"!avalon merlin mordred oberon percival morgana",
         "channel":{
             "id" : 0
         },
@@ -120,6 +129,15 @@ module.exports = [
             "id": 5
         }
     },
+    {
+        "content":"!team u0:USERNAME u1:USERNAME",
+        "channel":{
+            "id" : 0
+        },
+        "author":{
+            "id": 6
+        }
+    },
     //Fail vote
     {
         "content":"!fail",
@@ -173,6 +191,15 @@ module.exports = [
         },
         "author":{
             "id": 5
+        }
+    },
+    {
+        "content":"!pass",
+        "channel":{
+            "id" : "dm"
+        },
+        "author":{
+            "id": 6
         }
     },
     //pass
