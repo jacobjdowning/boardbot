@@ -1,0 +1,149 @@
+{
+    "base":{
+        "President":{
+            "team":"blue",
+            "status":"none",
+            "description":"As the President you must avoid the bomber"
+        },
+        "Bomber":{
+            "team":"red",
+            "status": "none",
+            "description":"As the Bomber you must end the game in the same room as the president"
+        }
+    },
+    "fill":{
+        "Blue":{
+            "team":"blue",
+            "status":"none",
+            "description":"Help the President avoid the bomber"
+        },
+        "Red":{
+            "team":"red",
+            "status":"none",
+            "description":"Help the Bomber find the president"
+        }
+    },
+    "gambler":{
+        "Gambler":{
+            "team":"gray",
+            "status":"none",
+            "description":"As the Gambler you must guess correctly what team wins at the end of the game to win yourself"
+        }
+    },
+    "helpers":{
+        "Doctor":{
+            "team":"blue",
+            "status":"none",
+            "description": "The President must card share with the you before the end of the game or the Blue Team loses. At the end of the game, the President will be asked if he/she/they card shared with the Doctor. At that time both players will verify or deny having card shared."
+        },
+        "Engineer":{
+            "team":"red",
+            "status":"none",
+            "description": "The Bomber must card share with the Engineer before the end of the game or the Red Team loses. At the end of the game, the Bomber will be asked if he/she/they card shared with the Engineer. At that time both players will verify or deny having card shared."
+        }
+    },
+    "coyboy":{
+        "Blue Coy":{
+            "team":"blue",
+            "status":"coy",
+            "description":"You begin with the \"coy\" condition. Players with the \"coy\" condition may ONLY color share even when a character's power might force a card share. A Coy Boy can't card share, privately reveal, or publicly reveal their card or their color."
+        },
+        "Red Coy":{
+            "team":"red",
+            "status":"coy",
+            "description":"You begin with the \"coy\" condition. Players with the \"coy\" condition may ONLY color share even when a character's power might force a card share. A Coy Boy can't card share, privately reveal, or publicly reveal their card or their color."
+        }
+    },
+    "negotiator":{
+        "Blue Negotiator":{
+            "team":"blue",
+            "status":"Savvy",
+            "description":"You begin with the \"savvy\" condition. Players with the \"savvy\" condition may only card share. You may not publicly, privately, or color share."
+        },
+        "Red Negotiator":{
+            "team":"red",
+            "status":"Savvy",
+            "description":"You begin with the \"savvy\" condition. Players with the \"savvy\" condition may only card share. You may not publicly, privately, or color share."
+        }
+    },
+    "spy":{
+        "Red Spy":{
+            "team":"red",
+            "status":"none",
+            "description":"You are on the red team but your card is blue, so if you are asked to colour share you must say blue not red"
+        },
+        "Blue Spy":{
+            "team":"blue",
+            "status":"none",
+            "description":"You are on the blue team but your card is red, so if you are asked to colour share you must say red not blue"
+        }
+    },
+    "criminal":{
+        "Red Criminal":{
+            "team":"red",
+            "status":"CRIMINAL",
+            "description":"You have the CRIMINAL power: any player that card shares with you gains the \"shy\" condition. Players with the \"shy\" condition may not reveal any part of their card to any player."
+        },
+        "Blue Criminal":{
+            "team":"blue",
+            "status":"CRIMINAL",
+            "description":"You have the CRIMINAL power: any player that card shares with you gains the \"shy\" condition. Players with the \"shy\" condition may not reveal any part of their card to any player."
+        }
+    },
+    "psychologist":{
+        "Red Psychologist":{
+            "team":"red",
+            "status":"THERAPY",
+            "description":"You have the THERAPY power: When you privately reveal your card to a character with the \"shy\" condition or the \"coy\" condition, that \"shy\" or \"coy\" character may then immediately card share with you, the Psychologist. If this is done, the \"shy\" and/or \"coy\" condition is removed. Furthermore, if someone with the \"paranoid\" condition card shares with you, the \"paranoid\" condition is removed."
+        },
+        "Blue Psychologist":{
+            "team":"blue",
+            "status":"THERAPY",
+            "description":"You have the THERAPY power: When you privately reveal your card to a character with the \"shy\" condition or the \"coy\" condition, that \"shy\" or \"coy\" character may then immediately card share with you, the Psychologist. If this is done, the \"shy\" and/or \"coy\" condition is removed. Furthermore, if someone with the \"paranoid\" condition card shares with you, the \"paranoid\" condition is removed."
+        }
+    },
+    "shyguy":{
+        "Blue Shy Guy":{
+            "team":"blue",
+            "status":"shy",
+            "description": "You begin with the \"shy\" condition. Players with the \"shy\" condition may not reveal any part of their card to any player."
+        },
+        "Red Shy Guy":{
+            "team":"red",
+            "status":"shy",
+            "description": "You begin with the \"shy\" condition. Players with the \"shy\" condition may not reveal any part of their card to any player."
+        }
+    },
+    "bury":{
+        "President's Daughter":{
+            "team":"blue",
+            "status":"none",
+            "description":"You are the backup character for the President. If the President card is buried or the President receives the \"dead\" condition before the bomb is activated, you must carry out all responsibilities associated with the President (for example: ending the game in the opposite room as the Bomber, card sharing with the Doctor)."
+        },
+        "Martyr":{
+            "team":"red",
+            "status":"none",
+            "description":"You are the backup character for the Bomber. If the Bomber card is buried or the Bomber receives the \"dead\" condition before the bomb is activated, you must carry out all responsibilities associated with the Bomber (for example: ending the game in the same room as the President, card sharing with the Engineer)."
+        }
+    },
+    "bury_helpers":{
+        "Nurse":{
+            "team":"blue",
+            "status":"none",
+            "description":"You are the backup character for the Doctor. If the Doctor card is buried or the Doctor receives the \"dead\" condition before the end of the game, you must carry out all responsibilities associated with the Doctor (card sharing with the President)."
+        },
+        "Tinkerer":{
+            "team":"red",
+            "status":"none",
+            "description":"You are the backup character for the Engineer. If the Engineer card is buried or the Engineer receives the \"dead\" condition before activating the bomb, you must carry out all responsibilities associated with the Engineer (card sharing with the Bomber)."
+        }
+    },
+    "PI":{
+        "Private Investigator":{
+            "team":"gray",
+            "status":"none",
+            "description":"At the end of the last round, before all players reveal their character cards, you must publicly announce the identity of the buried card. If you are correct, you win. If you are incorrect, you lose."
+        }
+    }
+    
+}
