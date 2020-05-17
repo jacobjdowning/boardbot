@@ -1,0 +1,37 @@
+[
+    {
+        "name":"Dracula",
+        "desc":"DRACULA  is  the  host  of  the  party.  He’s  in  every  game  and  may  never be   the   Mystery   Guest.   When   he   is   revealed (by any means, on any turn) he may accuse at the end of that turn.",
+        "ref":"Cannot be Mystery Guest. May accuse at the end of the turn in which he is revealed."
+    },
+    {
+        "name":"Alucard", 
+        "desc":"ALUCARD  desperately  wants  to  be  cool  like Dracula. If someone queries him with “Are you Dracula?”, he must Whisper Yes.",
+        "ref":"Answers YES to being Dracula if queried. Wins if accused of being Dracula"
+    },
+    {
+        "name":"Beelzebub",
+        "desc":"When BEELZEBUB’s query is answered with a Yes card, he may reveal his role and take another turn.",
+        "ref":"After recieving a YES response to a query, may take another turn - even when revealed"
+    },
+    {
+        "name":"The Boogie Monster", 
+        "desc":"THE BOOGIE MONSTER is a good-time ghoul. She accepts all dances. She may reveal  to  accuse  immediately  after  any  dance,  whether  or  not  she’s  involved in it. If she requests a dance  and  is  rejected,  she may immediately accuse.",
+        "ref":"Accepts all dances. May accuse immediately after any player dances or rejects her dance request."
+    },
+    {
+        "name":"Trickster", 
+        "desc":"TRICKSTER is a woman of many faces. She  must  always  whisper Yes   when   queried.   During   an   accusation,   she   must answer honestly.",
+        "ref":"Must whisper YES to all queries"
+    },
+    {
+        "name":"Van Helsing", 
+        "desc":"VAN HELSING is a woman on a mission.  When  she  accuses,  she  only  places  Dracula’s  Accusation  card.  If  she  gets a Yes response, she wins the game!",
+        "ref":"Only accuses Dracula. Wins if correct."
+    },
+    {
+        "name":"Werewolf", 
+        "desc":"WEREWOLF is a dog determined to have its day. It accepts all dances. As  soon  as  any  player  announces  their  intent to accuse (but before they revealtheir  identity),  Werewolf  may  reveal  to  accuse first. If Werewolf’s accusation is unsuccessful, play returns to the player who was about to accuse.Some guests can reveal their identity in order to accuseout of turn. If a player does this, Werewolf may accuseafter  they  reveal,  but  before  they  pass  out  Accusation  cards.",
+        "ref":"Accepts all dances. May accuse immediately before another player's accusation"
+    }
+]
