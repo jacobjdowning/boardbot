@@ -10,7 +10,7 @@ const inform = {
     "morgana":"You are Morgana! Your great power may confuse Percival. "+
         "Your co-conspirators are EVILSTRING",
     "evil":"You are an evil follower of Mordred!"+
-        "Your co-conspirators are EVILSTRTING",
+        "Your co-conspirators are EVILSTRING",
     "good":"You are good and loyal servant of King Arthur. "+
         "Weed out the evil in your midst."
 }

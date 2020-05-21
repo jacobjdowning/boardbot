@@ -39,8 +39,6 @@ class Resistance {
                 this._players[i+goodPlayers].special = evilCharacters[i].name
         }
 
-        console.log(this._players);
-
         Resistance.shuffle(this._players);
         this.curQuest = 0;
         this.votes = new Map();
@@ -49,10 +47,7 @@ class Resistance {
     }
 
     setProposedTeam(team){
-        if(this.voteState == "none"){
-            this.proposedTeam = team;
-            this.voteState = "team";
-        }
+        this.proposedTeam = team;
     }
 
     isTeamProposed(){

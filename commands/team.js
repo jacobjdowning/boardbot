@@ -92,6 +92,7 @@ async function startQuestVote(allPlayers, table, client){
             return await questVote(player, alignment);
         })
     );
+    table.game.curQuest = table.game.curQuest+1;
     announceResults(votes, allPlayers[0], table, ()=>{
         startRound(client, table.game);
     })//move into main async
