@@ -1,6 +1,20 @@
+const characters = [
+    {"name":"merlin", "team":"good"},
+    {"name":"percival", "team":"good"},
+    {"name":"oberon", "team":"evil"},
+    {"name":"mordred", "team":"evil"},
+    {"name":"morgana", "team":"evil"},  
+]
+
 class Resistance {
-    constructor(table){
+    constructor(table, requestedChars){
         let team = table.teams.get("unteamed");
+        //Get characters requested in the game
+        const usedChars = characters.filter(character =>
+            requestedChars.some((request) =>
+                character.name == request
+            )
+        );
         Resistance.shuffle(team);
         let goodPlayers = Resistance.goodPlayers(team.length);
         this._players = team.map((user, i) =>{
@@ -8,9 +22,23 @@ class Resistance {
                 "id": user.id,
                 "name": user.name,
                 "alignment": i<goodPlayers?"good":"evil",
-                "special": i==0?"merlin":"",
+                "special": "",
             }
         });
+        //add good special characters
+        const goodCharacters = usedChars.filter(char => char.team == "good");
+        for (let i = 0; i < Math.min(goodPlayers, goodCharacters.length); i++) {
+            this._players[i].special = goodCharacters[i].name
+        }
+
+        //add evil special characters
+        const evilCharacters = usedChars.filter(char => char.team == "evil");
+        for (let i = 0;
+            i < Math.min(this._players.length-goodPlayers,evilCharacters.length);
+            i++) {
+                this._players[i+goodPlayers].special = evilCharacters[i].name
+        }
+
         Resistance.shuffle(this._players);
         this.curQuest = 0;
         this.votes = new Map();
@@ -19,10 +47,7 @@ class Resistance {
     }
 
     setProposedTeam(team){
-        if(this.voteState == "none"){
-            this.proposedTeam = team;
-            this.voteState = "team";
-        }
+        this.proposedTeam = team;
     }
 
     isTeamProposed(){
@@ -103,6 +128,15 @@ class Resistance {
                 "special": player.special
             }
         });
+    }
+
+    static validateOptions(options) {
+        for (const option of options) {
+            if (characters.some((character) => character.name == option) == false){
+                return false;
+            }
+        }
+        return true;
     }
 
     static goodPlayers(total){
