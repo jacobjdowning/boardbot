@@ -3,10 +3,10 @@ module.exports = {
     "name": "decround",
     "onlyGame": "decrypto",
     "execute": (msg, args, table) => {
-        let messages = table.game.startRound();
         for (let i = 0; i < 2; i++) {
             msg.channel.send(table.game.revealCode(i));
         }
+        let messages = table.game.startRound();
         if(typeof(messages) == 'string'){
             msg.reply(messages);
             return;
