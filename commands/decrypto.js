@@ -6,7 +6,7 @@ module.exports = {
             msg.reply("There must be one team named black and one team named white to play this game");
             return;
         }
-        table.game = new Decrypto(table);
+        table.game = new Decrypto(table, args.includes('laser'));
         const userCache = msg.client.users.cache;
         let messages = table.game.startGame();
         messages.forEach(message => {

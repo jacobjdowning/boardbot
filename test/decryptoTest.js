@@ -46,7 +46,7 @@ module.exports = [
         }
     },
     {
-        "content":"!decrypto",
+        "content":"!decrypto laser",
         "channel":{
             "id" : 0
         },
