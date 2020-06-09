@@ -1,9 +1,10 @@
 const fs = require('fs');
+const { shuffle } = require("../utility.js");
 
 const numWords = 4;
 const wordsInCode = 3;
 
-const wordlist = fs.readFileSync('./assets/wordlist.txt',{'encoding':'utf8'})
+const wordlist = fs.readFileSync('./assets/wordlist.txt',{ 'encoding':'utf8'})
                 .split('\n')
                 .map((word) => {
                     return word.slice(0, -1)
@@ -11,17 +12,28 @@ const wordlist = fs.readFileSync('./assets/wordlist.txt',{'encoding':'utf8'})
 //maybe this^ should be async? probably lazily instantiated, maybe static? 
 //maybe only when we need a new board
 
+const categories = fs.readFileSync('./assets/laserDiskCategories.txt',{'encoding':'utf8'})
+                    .split('\n')
+                    .map((word) => {
+                        return word.slice(0, -1)
+                    });
+
 
 class Decrypto {
-    constructor(table){
+    constructor(table, expansion){
+        this.expansion = expansion;
+        console.log(expansion);
         this.roundCount = 0;
         this.teams = [];
         this.teams.push(table.teams.get('black'));
         this.teams.push(table.teams.get('white'));
         this.board = [];
+        let localwordlist = [...wordlist];
         for (let i = 0; i < numWords*2; i++) {
-            this.board.push(wordlist.splice(parseInt(Math.random()*wordlist.length), 1));
+            this.board.push(localwordlist.splice(parseInt(Math.random()*wordlist.length), 1));
         }
+        localwordlist = null;
+        this.categories = shuffle([...categories]);
     }
 
     getType(){return "decrypto"}
@@ -61,7 +73,12 @@ class Decrypto {
 
     startRound(){
         if(this.roundCount++ >= 6) return "Game's over! Time to score";
-        let messages = [{"id": "channel", "content":`Starting round:${this.roundCount}`}];
+        let curCategory = this.categories.pop();
+        let messages = [{
+            "id": "channel",
+            "content":`Starting round:${this.roundCount}` +
+            (this.expansion?` with the category: ${curCategory}`:'')
+        }];
         let encryptors = [];
         for (let i = 0; i < 2; i++) {
             let encryptor = this.teams[i].shift();
@@ -75,7 +92,8 @@ class Decrypto {
             messages.push({
                 "id":encryptors[i].id,
                 "content":`you have been chosen as an encryptor`+
-                ` this round, your code is ${this.codes[i]}`
+                ` this round, your code is ${this.codes[i]}` +
+                (this.expansion?` with the category: ${curCategory}`:'')
             });
         }
         return messages;
