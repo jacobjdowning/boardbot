@@ -33,5 +33,30 @@
         "name":"Werewolf", 
         "desc":"WEREWOLF is a dog determined to have its day. It accepts all dances. As  soon  as  any  player  announces  their  intent to accuse (but before they revealtheir  identity),  Werewolf  may  reveal  to  accuse first. If Werewolf’s accusation is unsuccessful, play returns to the player who was about to accuse.Some guests can reveal their identity in order to accuseout of turn. If a player does this, Werewolf may accuseafter  they  reveal,  but  before  they  pass  out  Accusation  cards.",
         "ref":"Accepts all dances. May accuse immediately before another player's accusation"
+    },
+    {
+        "name":"Doctor Jekyll",
+        "desc":"DOCTOR JEKYLL is a wallflower with a secret. Immediately before she queries another player, she must revealand switch her Guest card with the Mystery Guest. For the rest of the game, she plays as her new Guest card. If Doctor Jekyll is revealed by another method (such as by accusing), her ability no longer applies, so she may query as normal.",
+        "ref":"Must reveal and switch with Mystery Guest immediately before querying"
+    },
+    {
+        "name":"Brid of Dracula", 
+        "desc":"The BRIDE OF DRACULA refuses to be snubbed. When someone queriesher with “Are you Dracula?”, she must Whisper Yes in response. If she ever Whispers No to a query, she reveals the querying player, and immediately accuses. If that player is already revealed, The Bride of Dracula still accuses immediately.",
+        "ref":"After a response of No, forces a reveal from querier and accuses immediately"
+    },
+    {
+        "name":"Zombie", 
+        "desc":"ZOMBIE likes to keep his friends close. He accepts all dances, but cannot request dances. When accusing, Zombie only places Accusation cards in front of his neighbors - the guests to his immediate left and right. If he gets both Yes responses, he wins!",
+        "ref":"Accepts all dances. May not request dances. Only needs to accuse neighbors"
+    },
+    {
+        "name":"Captain Bluebeard", 
+        "desc":"CAPTAIN BLUEBEARD has no graces, either socially or on the dance floor. When any dance is accepted, Bluebeard may reveal to look at the Guest cards in that dance. After any query, he may reveal to look at the Whisper card being passed back in response. During any accusation, once all Accusation cards have been placed, he may reveal to look at one Whisper card being passed back in response. After Captain Bluebeard is revealed, he may no longer use his ability. This means he can only use one of these abilities per game.",
+        "ref":"Looks into one secret exchange"
+    },
+    {
+        "name":"Magic Mirror", 
+        "desc":"MAGIC MIRROR sees what others miss. At the start of the game, before the first turn, all players close their eyes. One person holds up the Mystery Guest so that it is clearly visible. The Magic Mirror may open their eyes and look at the Mystery Guest card. They then close their eyes and the Mystery Guest is returned to the center of the table. Everyone opens their eyes and the game begins as normal. In a game with multiple Mystery Guests, only one is shown. Choose which one before the game begins.",
+        "ref":"Knows a Mystery Guest"
     }
 ]
