@@ -24,7 +24,7 @@ A Mock version of Discord.js is included.
 ```bash
 npm run --test TestName
 ```
-will run TestName.js from the test folder. Tests are a list of message objects that represent messages that might come form users on
+will run TestName.js from the test folder. Tests are lists of message objects that represent messages that might come from users on
 a sever from which the bot is listening.
 
 ## Contributing
