@@ -1,9 +1,19 @@
 //TODO: Allow for some kind of assertion at the end of a test
 const realDiscord = require('discord.js');
 const sleep = require('util').promisify(setTimeout);
+let log = [];
 
-function mockLog(content){
-    console.log(`[Mock]${content}`);
+function mockLog(to, from, content){
+    log.push({
+        from: from,
+        to: to,
+        content: content
+    });
+    // console.log(`[Mock]${content}`);
+}
+
+function clearLogs(){
+    log = [];
 }
 
 class Collector{ //Only options supported are time and max
@@ -33,7 +43,7 @@ class Collector{ //Only options supported are time and max
 
 class StreamDispatcher{
     constructor(stream, options){
-        let empty = ()=>{console.log("Nothing here")};
+        let empty = ()=>{mockLog('console', 'server', "Nothing here")};
         this.hooks = {
             'debug': empty,
             'start': empty,
@@ -49,7 +59,7 @@ class StreamDispatcher{
 
     play(){
         this.hooks['start']();
-        mockLog(`Playing audio from${this.stream.path}`);
+        mockLog('console', 'server', `Playing audio from${this.stream.path}`);
         setTimeout(()=>{this.hooks['finish']()}, 10);
     }
 }
@@ -72,7 +82,7 @@ class VoiceConnection{
             return;
         }
         this.connected = false;
-        mockLog(`Disconnecting from ${this.channel.id}`);
+        mockLog('console', 'server', `Disconnecting from ${this.channel.id}`);
     }
 }
 
@@ -96,7 +106,7 @@ class Channel{
     }
 
     async send(content){
-        mockLog(`[Text.${this.id}]${content}`);
+        mockLog(this.id, 'boardbot' ,content);
         return;
     }
 
@@ -112,7 +122,7 @@ class Channel{
             console.error("Cannont join non-voice channel");
             return;
         } 
-        mockLog(`Connecting to voice channel ${this.id}`)
+        mockLog('console', 'log' `Connecting to voice channel ${this.id}`)
         return new VoiceConnection(this);
     }
 
@@ -146,7 +156,7 @@ class Message{
 
     reply(content){
         const mention = this.channel.type!='dm'?`@${this.author.username}`:'';
-        mockLog(`[${this.channel.type}.${this.channel.id}]`+
+        mockLog(`[${this.channel.type}.${this.channel.id}]`, 'boardbot',
             `${mention} ${content}`);
     }
 }
@@ -224,7 +234,7 @@ class Client{
             member,
             outline.content);
 
-        console.log(msg.author.username, " : ", msg.content);
+        mockLog(msg.channel, msg.author.username, msg.content);
         channel.collectors.forEach(collector =>{
             collector.collect(msg);
         });
@@ -244,15 +254,15 @@ class Client{
         return;
     }
 
-    login(token){
+    async login(token){
         if(token == null){
-            console.log("No Token given");
+            mockLog('console', 'server', "No Token given");
             return;
         }
         this.hooks['ready']();
         //run tests here
-        const messages = require(`./${this.test}.js`);
-        this._messages(messages);
+        await this._messages(this.test);
+        return log;
     }
 
     on(hookname, callback){
@@ -262,5 +272,6 @@ class Client{
 
 module.exports = {
     "Client": Client,
-    "Collection": realDiscord.Collection
+    "Collection": realDiscord.Collection,
+    "clearLogs": clearLogs
 }
