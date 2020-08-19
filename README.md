@@ -20,12 +20,14 @@ node app.js
 
 ## Testing
 
-A Mock version of Discord.js is included. 
 ```bash
-npm run --test TestName
+npm test
 ```
-will run TestName.js from the test folder. Tests are lists of message objects that represent messages that might come from users on
-a sever from which the bot is listening.
+
+runs all test files that end in .test.js in folder test or child folders.
+Tests should be executed through the included mock version of Discord js. This mock takes in a list of message objects that represent messages from users and 
+returns a log of all incoming and outgoing messages from the server if those messages were sent sequentially.
+
 
 ## Contributing
 Pull requests are welcome. As a general rule game states are saved in objects defined in /games and do not interact with discord.js.
