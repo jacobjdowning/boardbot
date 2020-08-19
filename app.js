@@ -3,7 +3,6 @@ const fs = require('fs');
 const Discord = require('discord.js');
 const Table = require('./table.js');
 const client = new Discord.Client();
-const token = require('./token.js');
 const tables = new Map();
 
 client.commands = new Discord.Collection();
@@ -58,6 +57,7 @@ client.on('message', message =>{
 });
 
 if (require.main === module){
+    const token = require('./token.js');
     client.login(token);
 }else{
     module.exports = {
