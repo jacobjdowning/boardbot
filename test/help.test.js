@@ -64,9 +64,6 @@ describe('Help Command', function(){
                 const command = require(`../commands/${file}`);
                 return command.desc;
             }).filter(desc => desc);
-
-            consolelog(descriptions);
-
             response.content.should.includeEvery(descriptions);
         })
     })
