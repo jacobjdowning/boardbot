@@ -45,7 +45,7 @@ describe('Teams', function(){
     });
 
     after(function(){
-        mockery.disable();
+        mockery.deregisterAll();
     });
 
 });
