@@ -1,11 +1,8 @@
 const fs = require('fs');
 
-const isTest = process.argv[2] == '--test';
-const Discord = require(isTest?'./test/mockDiscord.js':'discord.js');
+const Discord = require('discord.js');
 const Table = require('./table.js');
 const client = new Discord.Client();
-if(isTest) { client.setTest(process.argv[3]); }
-const token = require('./token.js');
 const tables = new Map();
 
 client.commands = new Discord.Collection();
@@ -59,4 +56,12 @@ client.on('message', message =>{
     //TODO: Add DM only or public Channel only properties
 });
 
-client.login(token);
+if (require.main === module){
+    const token = require('./token.js');
+    client.login(token);
+}else{
+    module.exports = {
+        'client': client,
+        'tables': tables
+    }
+}
