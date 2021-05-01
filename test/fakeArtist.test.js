@@ -10,8 +10,8 @@ describe('Fake Artist Goes to NY', function(){
         mockery.enable({
             warnOnUnregistered: false
         });
-        consolelog = console.log;
-        console.log = () => {};
+        // consolelog = console.log;
+        // console.log = () => {};
     });
 
     context('Four users, 0u - 3u, join unteamed and u0 enters'+
@@ -36,13 +36,12 @@ describe('Fake Artist Goes to NY', function(){
         })
 
         afterEach(function(){
-            // this.currentTest.app.tables = new Map();
             mockDiscord.clearLogs();
         });
     });
 
     after(function(){
-        console.log = consolelog;
+        // console.log = consolelog;
         mockery.disable();
     });
 })
